@@ -9,11 +9,16 @@ type NavBarProps = {
 
 const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
 	const navRef = useRef<HTMLDivElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	const handleClickOutside = (event: MouseEvent) => {
-		if (navRef.current && !navRef.current.contains(event.target as Node)) {
-			setIsOpen(false);
+		if (
+			navRef.current?.contains(event.target as Node) ||
+			buttonRef.current?.contains(event.target as Node)
+		) {
+			return;
 		}
+		setIsOpen(false);
 	};
 
 	useEffect(() => {
@@ -29,6 +34,7 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
 	return (
 		<>
 			<button
+				ref={buttonRef}
 				className="navbar-toggle"
 				onClick={() => setIsOpen(!isOpen)}
 			>
